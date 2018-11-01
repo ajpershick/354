@@ -1,0 +1,92 @@
+--------Assignment 5----------
+	----Question 3----
+
+-- (a)
+
+
+select 
+{	([Date].[Calendar Year].&[2007])	} 
+	on columns,
+	
+non empty{	([Product].[Product Categories].[Category] + [Product].[Product Categories].[Product])  } 
+	on rows
+
+from [Adventure Works];
+
+-- (b)
+
+select 
+{	[Date].[Calendar Year].&[2007], [Date].[Calendar Year].&[2008]	} 
+	on columns,
+
+{	[Geography].[Country].&[Canada], [Geography].[Country].&[France]	} 
+	on rows
+
+from [Adventure Works];
+
+
+-- (c)
+
+select 
+{	[Date].[Calendar Year].children	} 
+	on columns,
+	
+{	([Product].[Model Name].&[Rear Brakes] : [Product].[Model Name].&[Road-750]) 
+	- [Product].[Model Name].&[Road Bottle Cage] - [Product].[Model Name].&[Road Tire Tube]	}
+	on rows
+
+from [Adventure Works];
+
+
+-- (d)
+
+select 
+{	([Date].[Calendar Year].&[2008])	} 
+	on columns,
+
+{	[Geography].[City].[Bellingham], [Geography].[City].[Seattle]	} 
+	on rows
+
+from (select { [Product].[Category].[Bikes] } on columns
+		From [Adventure Works])
+
+where [Measures].[Internet Sales Amount];
+
+-- (e)
+
+
+select 
+{	([Measures].[Internet Sales Amount])	} 
+	on columns,
+
+{	[Customer].[Education].members	} 
+	having [Measures].[Internet Sales Amount] > 2000000
+	on rows
+
+from (select { [Customer].[Gender].&[F] }
+	on columns
+	From [Adventure Works]);
+
+-- (f)
+
+with member [maxVal] as
+	max([Product].[Category].children, [Measures].[Reseller Sales Amount])
+
+select 
+{	[maxVal] } on columns,
+
+{	[Date].[Calendar Week of Year].members	} on rows
+
+from [Adventure Works];
+
+	
+	
+
+
+
+
+
+
+
+
+  
